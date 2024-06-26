@@ -7,18 +7,25 @@ import (
 	"os"
 
 	"main/src/config"
+	"main/src/utilities"
 
 	"github.com/joho/godotenv"
 )
 
-func LoadEnv() {
+func Initialize(args []string) {
+	loadEnv()
+	loadConfig()
+	utilities.DetectMigration()
+}
+
+func loadEnv() {
 	err := godotenv.Load()
 	if err != nil {
 		panic("Failed to load .env file!")
 	}
 }
 
-func LoadConfig() {
+func loadConfig() {
 	jsonFile, err := os.Open("config.json")
 	if err != nil {
 		fmt.Println(err)
