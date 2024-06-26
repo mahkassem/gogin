@@ -12,7 +12,7 @@ import (
 	"github.com/joho/godotenv"
 )
 
-func Initialize(args []string) {
+func Initialize() {
 	loadEnv()
 	loadConfig()
 	utilities.DetectMigration()
