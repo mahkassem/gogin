@@ -3,6 +3,7 @@ package utilities
 import (
 	"fmt"
 	"main/src/config"
+	"os"
 	"reflect"
 
 	"github.com/gin-gonic/gin"
@@ -56,3 +57,26 @@ func SetupBaseRoute(routeName string, controller any) {
 		)
 	}
 }
+
+func DetectMigration() bool {
+	if len(os.Args) < 2 {
+		return false
+	}
+	command := os.Args[1]
+	return command == "migrate" || command == "-m" || command == "--migrate"
+}
+
+// func HandleCommandArguments() {
+// 	if len(os.Args) < 2 {
+// 		return
+// 	}
+// 	command := os.Args[1]
+// 	switch command {
+// 	case "migrate", "-m", "--migrate":
+// 		initializers.DB.AutoMigrate(&models.Entity{})
+// 		// migrations.PerformMigration()
+// 		os.Exit(0)
+// 	default:
+// 		fmt.Println("Invalid command!, Argument[1]: " + os.Args[1])
+// 	}
+// }
