@@ -1,9 +1,17 @@
 package main
 
-import "main/src/router"
+import (
+	server "main/src"
+	"main/src/initializers"
+)
+
+func Init() {
+	initializers.LoadEnv()
+	initializers.ConnectToDB()
+	initializers.LoadConfig()
+}
 
 func main() {
-	r := router.SetupRouter()
-	// Listen and Server in 0.0.0.0:8080
-	r.Run(":8080")
+	Init()
+	server.StartServer()
 }

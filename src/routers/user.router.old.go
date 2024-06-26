@@ -1,4 +1,4 @@
-package router
+package routers
 
 import (
 	"net/http"
@@ -6,9 +6,15 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+/*
+	Do not delete this file in the early stages of development.
+	You may need to refer to this file to understand how to set up routes in Gin.
+*/
+
 var db = make(map[string]string)
 
 func SetupRouter() *gin.Engine {
+
 	// Disable Console Color
 	// gin.DisableConsoleColor()
 	r := gin.Default()

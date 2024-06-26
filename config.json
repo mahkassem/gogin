@@ -1,0 +1,31 @@
+{
+	"routes": {
+		"user": {
+			"path": "/user",
+			"description": "User routes",
+			"routes": {
+				"showAll": {
+					"path": "s/",
+					"method": "GET",
+					"handler": "ShowAllUsers"
+				},
+				"getById": {
+					"path": "s/:id",
+					"method": "GET",
+					"handler": "GetUserById"
+				}
+			}
+		},
+		"ping": {
+			"path": "/ping",
+			"description": "Ping routes",
+			"routes": {
+				"test": {
+					"path": "/",
+					"method": "GET",
+					"handler": "Test"
+				}
+			}
+		}
+	}
+}
