@@ -7,5 +7,5 @@ import (
 func Initialize() {
 	LoadEnv()
 	LoadConfig()
-	utilities.DetectMigration()
+	Connect(utilities.DetectMigration())
 }

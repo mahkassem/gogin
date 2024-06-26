@@ -9,7 +9,7 @@ import (
 	"gorm.io/gorm"
 )
 
-func ConnectToDB(migrate bool) gorm.DB {
+func Connect(migrate bool) gorm.DB {
 
 	var err error
 	// MYSQL
