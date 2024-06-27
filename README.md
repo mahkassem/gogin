@@ -9,10 +9,8 @@
 - Change '.env.example' to '.env' and change the environment variables to fit your needs.
 - Run 'go run main.go' in your terminal.
 - Enjoy :) 
-- 
 ## Linux | MacOS
 - Soon
-- 
 # Important URLS
 - Documentation (Go Gin)
   - https://gin-gonic.com/docs
