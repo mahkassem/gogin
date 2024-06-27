@@ -27,7 +27,7 @@ type Response struct {
 }
 
 type Error struct {
-	error
+	Error    error
 	Message  string
 	Code     int
 	MetaData interface{}

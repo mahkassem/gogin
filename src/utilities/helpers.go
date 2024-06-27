@@ -66,17 +66,16 @@ func DetectMigration() bool {
 	return command == "migrate" || command == "-m" || command == "--migrate"
 }
 
-// func HandleCommandArguments() {
-// 	if len(os.Args) < 2 {
-// 		return
-// 	}
-// 	command := os.Args[1]
-// 	switch command {
-// 	case "migrate", "-m", "--migrate":
-// 		initializers.DB.AutoMigrate(&models.Entity{})
-// 		// migrations.PerformMigration()
-// 		os.Exit(0)
-// 	default:
-// 		fmt.Println("Invalid command!, Argument[1]: " + os.Args[1])
-// 	}
-// }
+func Assign(_1 interface{}, _2 []interface{}) {
+	// Reflect value of the existing user
+	v := reflect.ValueOf(_1).Elem()
+
+	// Iterate over the request body and update fields dynamically
+	for key, value := range _2 {
+		fmt.Println(key, value)
+		field := v.FieldByName(string(key))
+		if field.IsValid() && field.CanSet() {
+			field.Set(reflect.ValueOf(value))
+		}
+	}
+}

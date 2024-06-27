@@ -1,18 +1,33 @@
 {
 	"routes": {
 		"user": {
-			"path": "/user",
+			"path": "/users",
 			"description": "User routes",
 			"routes": {
 				"showAll": {
-					"path": "s/",
+					"path": "/",
 					"method": "GET",
 					"handler": "ShowAllUsers"
 				},
 				"getById": {
-					"path": "s/:id",
+					"path": "/:id",
 					"method": "GET",
 					"handler": "GetUserById"
+				},
+				"createUser": {
+					"path": "/",
+					"method": "POST",
+					"handler": "CreateUser"
+				},
+				"updateUser": {
+					"path": "/:id",
+					"method": "PUT",
+					"handler": "UpdateUser"
+				},
+				"deleteUser": {
+					"path": "/:id",
+					"method": "DELETE",
+					"handler": "DeleteUser"
 				}
 			}
 		},

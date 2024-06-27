@@ -6,7 +6,7 @@ import (
 )
 
 func init() {
-	initializers.Initialize()
+	initializers.Initialize(false)
 }
 
 func main() {

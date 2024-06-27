@@ -28,5 +28,5 @@ func initEngine() *gin.Engine {
 	return gin.Default()
 }
 func listen() {
-	config.Application.Run(":" + os.Getenv("PORT"))
+	config.Application.Run("127.0.0.1:" + os.Getenv("PORT"))
 }

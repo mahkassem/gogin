@@ -4,5 +4,5 @@ import "gorm.io/gorm"
 
 type Entity struct {
 	gorm.Model
-	Id string
+	ID uint64 `sql:"AUTO_INCREMENT" gorm:"primary_key"`
 }

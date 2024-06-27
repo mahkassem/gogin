@@ -1,0 +1,180 @@
+{
+	"name": "gogin",
+	"version": "1",
+	"items": [
+		{
+			"type": "http",
+			"name": "CreateUser",
+			"seq": 2,
+			"request": {
+				"url": "http://{{host}}:{{port}}/users/",
+				"method": "POST",
+				"headers": [],
+				"body": {
+					"mode": "json",
+					"json": "{\n  \"username\": \"MostafaAdly\",\n  \"email\": \"MostafaAdly.official@gmail.com\"\n}",
+					"formUrlEncoded": [],
+					"multipartForm": []
+				},
+				"auth": {
+					"mode": "none",
+					"basic": {
+						"username": "",
+						"password": ""
+					},
+					"bearer": {
+						"token": ""
+					}
+				},
+				"script": {},
+				"vars": {},
+				"assertions": [],
+				"tests": "",
+				"query": []
+			}
+		},
+		{
+			"type": "http",
+			"name": "Show All Users",
+			"seq": 3,
+			"request": {
+				"url": "http://{{host}}:{{port}}/users/",
+				"method": "GET",
+				"headers": [],
+				"body": {
+					"mode": "none",
+					"formUrlEncoded": [],
+					"multipartForm": []
+				},
+				"auth": {
+					"mode": "none",
+					"basic": {
+						"username": "",
+						"password": ""
+					},
+					"bearer": {
+						"token": ""
+					}
+				},
+				"script": {},
+				"vars": {},
+				"assertions": [],
+				"tests": "",
+				"query": []
+			}
+		},
+		{
+			"type": "http",
+			"name": "Get User By Id",
+			"seq": 4,
+			"request": {
+				"url": "http://{{host}}:{{port}}/users/1",
+				"method": "GET",
+				"headers": [],
+				"body": {
+					"mode": "none",
+					"formUrlEncoded": [],
+					"multipartForm": []
+				},
+				"auth": {
+					"mode": "none",
+					"basic": {
+						"username": "",
+						"password": ""
+					},
+					"bearer": {
+						"token": ""
+					}
+				},
+				"script": {},
+				"vars": {},
+				"assertions": [],
+				"tests": "",
+				"query": []
+			}
+		},
+		{
+			"type": "http",
+			"name": "Update User",
+			"seq": 5,
+			"request": {
+				"url": "http://{{host}}:{{port}}/users/1",
+				"method": "PUT",
+				"headers": [],
+				"body": {
+					"mode": "json",
+					"json": "{\n  \"username\": \"Hossam Youssef\",\n  \"email\": \"hossam@gmail.com\"\n}",
+					"formUrlEncoded": [],
+					"multipartForm": []
+				},
+				"auth": {
+					"mode": "none",
+					"basic": {
+						"username": "",
+						"password": ""
+					},
+					"bearer": {
+						"token": ""
+					}
+				},
+				"script": {},
+				"vars": {},
+				"assertions": [],
+				"tests": "",
+				"query": []
+			}
+		},
+		{
+			"type": "http",
+			"name": "Delete User",
+			"seq": 6,
+			"request": {
+				"url": "http://{{host}}:{{port}}/users/1",
+				"method": "DELETE",
+				"headers": [],
+				"body": {
+					"mode": "none",
+					"formUrlEncoded": [],
+					"multipartForm": []
+				},
+				"auth": {
+					"mode": "none",
+					"basic": {
+						"username": "",
+						"password": ""
+					},
+					"bearer": {
+						"token": ""
+					}
+				},
+				"script": {},
+				"vars": {},
+				"assertions": [],
+				"tests": "",
+				"query": []
+			}
+		}
+	],
+	"activeEnvironmentUid": "boCxec5yr0rXApG1T5zRM",
+	"environments": [
+		{
+			"variables": [
+				{
+					"name": "host",
+					"value": "127.0.0.1",
+					"enabled": true,
+					"secret": false,
+					"type": "text"
+				},
+				{
+					"name": "port",
+					"value": "3000",
+					"enabled": true,
+					"secret": false,
+					"type": "text"
+				}
+			],
+			"name": "host"
+		}
+	]
+}

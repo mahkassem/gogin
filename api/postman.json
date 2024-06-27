@@ -1,0 +1,87 @@
+{
+	"info": {
+		"name": "gogin",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "bruno",
+			"event": []
+		},
+		{
+			"name": "CreateUser",
+			"event": [],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": "http://{{host}}:{{port}}/users/",
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"username\": \"MostafaAdly\",\n  \"email\": \"MostafaAdly.official@gmail.com\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				}
+			}
+		},
+		{
+			"name": "Show All Users",
+			"event": [],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "http://{{host}}:{{port}}/users/"
+			}
+		},
+		{
+			"name": "Get User By Id",
+			"event": [],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "http://{{host}}:{{port}}/users/1"
+			}
+		},
+		{
+			"name": "Update User",
+			"event": [],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": "http://{{host}}:3000/users/1",
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"username\": \"Hossam Youssef\",\n  \"email\": \"hossam@gmail.com\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				}
+			}
+		},
+		{
+			"name": "Delete User",
+			"event": [],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": "http://{{host}}:{{port}}/users/1"
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "host",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "port",
+			"value": "",
+			"type": "default"
+		}
+	]
+}

@@ -1,26 +1,30 @@
 package services
 
-type User struct {
-	Id   int
-	Name string
-	Age  int
-}
+import (
+	"main/src/config"
+	"main/src/database/models"
+	"reflect"
+)
 
-var db = []User{
-	{Id: 1, Name: "MostafaAdly", Age: 22},
-	{Id: 2, Name: "MahmoudKassem", Age: 35},
-	{Id: 3, Name: "HossamYoussef", Age: 37},
-}
-
-func GetUserById(id int) (User, bool) {
-	for _, user := range db {
-		if user.Id == id {
-			return user, true
-		}
+func GetUserById(id int) (models.User, bool) {
+	user := models.User{}
+	config.DB.First(&user, id)
+	if user.ID != 0 {
+		return user, true
 	}
-	return User{}, false
+	return models.User{}, false
 }
 
-func GetAllUsers() ([]User, bool) {
-	return db, true
+func GetAllUsers() ([]models.User, bool) {
+	users := []models.User{}
+	config.DB.Find(&users)
+	return users, true
+}
+
+func AssignUserToAnotherUser(user models.User, anotherUser models.User) {
+	v1 := reflect.ValueOf(anotherUser)
+	v2 := reflect.ValueOf(anotherUser)
+	for i := 0; i < v1.NumField(); i++ {
+		v2.Field(i).Set(v1.Field(i))
+	}
 }

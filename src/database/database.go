@@ -1,15 +1,15 @@
-package initializers
+package database
 
 import (
-	"main/migrations"
 	"main/src/config"
+	"main/src/database/migrations"
 	"os"
 
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
 
-func Connect(migrate bool) gorm.DB {
+func Connect() gorm.DB {
 
 	var err error
 	// MYSQL
@@ -21,8 +21,15 @@ func Connect(migrate bool) gorm.DB {
 		panic("Failed to connect to database!")
 	}
 
-	if migrate {
+	if config.DROP_TABLES {
+		migrations.DropTables()
+	}
+
+	if config.MIGRATE {
 		migrations.PerformMigration()
+	}
+
+	if !config.REGULAR_STARTUP && (config.DROP_TABLES || config.MIGRATE) {
 		os.Exit(0)
 	}
 

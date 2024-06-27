@@ -1,11 +1,8 @@
 package initializers
 
-import (
-	"main/src/utilities"
-)
-
-func Initialize() {
+func Initialize(migrateFile bool) {
+	HandleCommandArguments(migrateFile)
 	LoadEnv()
 	LoadConfig()
-	Connect(utilities.DetectMigration())
+	ConnectDatabase()
 }
