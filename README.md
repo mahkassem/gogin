@@ -11,6 +11,22 @@
 - Enjoy :) 
 ## Linux | MacOS
 - Soon
+
+##  Usage
+>**$** go run main.go `-m`
+  - `-m` means that the program will perform migration.
+  - program will **stop** after.
+>**$** go run main.go `-d`
+  - `-d` means that the program will drop all database tables.
+  - program will **stop** after.
+>**$** go run main.go `-md`
+  - combined flags from `-m` & `-d`
+  - order does **NOT** matter, dropping tables will always happen first.
+  - program will **stop** after.
+>**$** go run main.go `-md` `-n`
+  - `-n` means normal startup.
+  - program will drop all database tables, perform migration and will **NOT STOP** after. 
+ 
 # Important URLS
 
 | Name  |  URL |
