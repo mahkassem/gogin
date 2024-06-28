@@ -27,6 +27,10 @@ func HandleCommandArguments(migrateFile bool) {
 			config.REGULAR_STARTUP = false
 		case "-n":
 			config.REGULAR_STARTUP = true
+		case "-mdn":
+			config.DROP_TABLES = true
+			config.MIGRATE = true
+			config.REGULAR_STARTUP = true
 		default:
 			fmt.Println("Invalid command:", command)
 		}

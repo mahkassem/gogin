@@ -3,28 +3,45 @@ package services
 import (
 	"main/src/config"
 	"main/src/database/models"
-	"reflect"
+	"main/src/utilities"
+
+	"gorm.io/gorm"
 )
 
-func GetUserById(id int) (models.User, bool) {
+func CreateUser(user *models.User) *gorm.DB {
+	result := config.DB.Create(&user)
+	return result
+}
+
+func DeleteUser(id int) *gorm.DB {
+	result := config.DB.Delete(&models.User{}, id)
+	return result
+}
+
+func UpdateUser(id int, data models.User) (*models.User, *gorm.DB, bool) {
+	user, _, ok := GetUserById(id)
+	if !ok {
+		return nil, nil, false
+	}
+	utilities.AssignDataToUser(data, &user)
+	result := config.DB.Updates(&user)
+	if result.Error != nil {
+		return nil, result, true
+	}
+	return &user, result, true
+}
+
+func GetUserById(id int) (models.User, *gorm.DB, bool) {
 	user := models.User{}
-	config.DB.First(&user, id)
+	result := config.DB.First(&user, id)
 	if user.ID != 0 {
-		return user, true
+		return user, result, true
 	}
-	return models.User{}, false
+	return models.User{}, result, false
 }
 
-func GetAllUsers() ([]models.User, bool) {
+func GetAllUsers() ([]models.User, *gorm.DB) {
 	users := []models.User{}
-	config.DB.Find(&users)
-	return users, true
-}
-
-func AssignUserToAnotherUser(user models.User, anotherUser models.User) {
-	v1 := reflect.ValueOf(anotherUser)
-	v2 := reflect.ValueOf(anotherUser)
-	for i := 0; i < v1.NumField(); i++ {
-		v2.Field(i).Set(v1.Field(i))
-	}
+	result := config.DB.Find(&users)
+	return users, result
 }

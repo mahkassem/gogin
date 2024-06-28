@@ -7,7 +7,7 @@
 				"showAll": {
 					"path": "/",
 					"method": "GET",
-					"handler": "ShowAllUsers"
+					"handler": "GetAllUsers"
 				},
 				"getById": {
 					"path": "/:id",

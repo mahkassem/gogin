@@ -9,8 +9,8 @@ import (
 )
 
 func StartServer() {
-	config.Application = initEngine()
 	gin.SetMode(gin.ReleaseMode)
+	config.Application = initEngine()
 	go postInitialize()
 	listen()
 }

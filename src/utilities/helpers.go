@@ -3,10 +3,12 @@ package utilities
 import (
 	"fmt"
 	"main/src/config"
+	"main/src/database/models"
 	"os"
 	"reflect"
 
 	"github.com/gin-gonic/gin"
+	"golang.org/x/crypto/bcrypt"
 )
 
 func GetMethodByName(name string, controller any) (gin.HandlerFunc, error) {
@@ -77,5 +79,27 @@ func Assign(_1 interface{}, _2 []interface{}) {
 		if field.IsValid() && field.CanSet() {
 			field.Set(reflect.ValueOf(value))
 		}
+	}
+}
+
+func HashPassword(password string) string {
+	result, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
+	if err != nil {
+		panic(err)
+	}
+	return string(result)
+}
+
+func ComparePassword(hashedPassword string, password string) bool {
+	return bcrypt.CompareHashAndPassword([]byte(hashedPassword), []byte(password)) == nil
+}
+
+func AssignDataToUser(data models.User, user *models.User) {
+	if data.Email != "" {
+		user.Email = data.Email
+	}
+
+	if data.Username != "" {
+		user.Username = data.Username
 	}
 }
