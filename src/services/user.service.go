@@ -1,7 +1,7 @@
 package services
 
 import (
-	"main/src/config"
+	"main/src/database"
 	"main/src/database/models"
 	"main/src/utilities"
 
@@ -9,12 +9,12 @@ import (
 )
 
 func CreateUser(user *models.User) *gorm.DB {
-	result := config.DB.Create(&user)
+	result := database.DB.Create(&user)
 	return result
 }
 
 func DeleteUser(id int) *gorm.DB {
-	result := config.DB.Delete(&models.User{}, id)
+	result := database.DB.Delete(&models.User{}, id)
 	return result
 }
 
@@ -24,7 +24,7 @@ func UpdateUser(id int, data models.User) (*models.User, *gorm.DB, bool) {
 		return nil, nil, false
 	}
 	utilities.AssignDataToUser(data, &user)
-	result := config.DB.Updates(&user)
+	result := database.DB.Updates(&user)
 	if result.Error != nil {
 		return nil, result, true
 	}
@@ -33,7 +33,7 @@ func UpdateUser(id int, data models.User) (*models.User, *gorm.DB, bool) {
 
 func GetUserById(id int) (models.User, *gorm.DB, bool) {
 	user := models.User{}
-	result := config.DB.First(&user, id)
+	result := database.DB.First(&user, id)
 	if user.ID != 0 {
 		return user, result, true
 	}
@@ -42,6 +42,6 @@ func GetUserById(id int) (models.User, *gorm.DB, bool) {
 
 func GetAllUsers() ([]models.User, *gorm.DB) {
 	users := []models.User{}
-	result := config.DB.Find(&users)
+	result := database.DB.Find(&users)
 	return users, result
 }

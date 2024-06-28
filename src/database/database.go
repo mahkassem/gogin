@@ -1,7 +1,6 @@
 package database
 
 import (
-	"main/src/config"
 	"main/src/database/migrations"
 	"os"
 
@@ -9,29 +8,36 @@ import (
 	"gorm.io/gorm"
 )
 
+var DB *gorm.DB
+
+// STATE
+var DROP_TABLES = false
+var MIGRATE = false
+var REGULAR_STARTUP = true
+
 func Connect() gorm.DB {
 
 	var err error
 	// MYSQL
 	connection := os.Getenv("DATABASE_URL")
-	config.DB, err = gorm.Open(mysql.Open(connection), &gorm.Config{})
+	DB, err = gorm.Open(mysql.Open(connection), &gorm.Config{})
 	// SQLITE
 	// DB, err := gorm.Open(sqlite.Open("/tmp/database.db"), &gorm.Config{})
 	if err != nil {
 		panic("Failed to connect to database!")
 	}
 
-	if config.DROP_TABLES {
-		migrations.DropTables()
+	if DROP_TABLES {
+		migrations.DropTables(DB)
 	}
 
-	if config.MIGRATE {
-		migrations.PerformMigration()
+	if MIGRATE {
+		migrations.PerformMigration(DB)
 	}
 
-	if !config.REGULAR_STARTUP && (config.DROP_TABLES || config.MIGRATE) {
+	if !REGULAR_STARTUP && (DROP_TABLES || MIGRATE) {
 		os.Exit(0)
 	}
 
-	return *config.DB
+	return *DB
 }

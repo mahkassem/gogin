@@ -2,13 +2,13 @@ package initializers
 
 import (
 	"fmt"
-	"main/src/config"
+	"main/src/database"
 	"os"
 )
 
 func HandleCommandArguments(migrateFile bool) {
 	if migrateFile {
-		config.MIGRATE = true
+		database.MIGRATE = true
 	}
 	if len(os.Args) < 2 {
 		return
@@ -16,21 +16,21 @@ func HandleCommandArguments(migrateFile bool) {
 	for _, command := range os.Args[1:] {
 		switch command {
 		case "-d", "--drop-tables":
-			config.DROP_TABLES = true
-			config.REGULAR_STARTUP = false
+			database.DROP_TABLES = true
+			database.REGULAR_STARTUP = false
 		case "-m", "--migrate":
-			config.MIGRATE = true
-			config.REGULAR_STARTUP = false
+			database.MIGRATE = true
+			database.REGULAR_STARTUP = false
 		case "-md", "-dm":
-			config.DROP_TABLES = true
-			config.MIGRATE = true
-			config.REGULAR_STARTUP = false
+			database.DROP_TABLES = true
+			database.MIGRATE = true
+			database.REGULAR_STARTUP = false
 		case "-n":
-			config.REGULAR_STARTUP = true
+			database.REGULAR_STARTUP = true
 		case "-mdn":
-			config.DROP_TABLES = true
-			config.MIGRATE = true
-			config.REGULAR_STARTUP = true
+			database.DROP_TABLES = true
+			database.MIGRATE = true
+			database.REGULAR_STARTUP = true
 		default:
 			fmt.Println("Invalid command:", command)
 		}

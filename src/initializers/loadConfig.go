@@ -1,9 +1,5 @@
 package initializers
 
-import (
-	"main/src/config"
-)
-
 func LoadConfig() {
-	config.SetupRoutesConfiguration()
+	// TODO: Configuration methods called here.
 }

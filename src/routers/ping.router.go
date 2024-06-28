@@ -2,9 +2,10 @@ package routers
 
 import (
 	"main/src/controllers"
-	"main/src/utilities"
+
+	"github.com/gin-gonic/gin"
 )
 
-func SetupPingRouter() {
-	utilities.SetupBaseRoute("ping", &controllers.PingController{})
+func SetupPingRouter(Application *gin.Engine) {
+	SetupBaseRoute(Application, "ping", &controllers.PingController{})
 }

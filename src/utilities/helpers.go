@@ -2,7 +2,6 @@ package utilities
 
 import (
 	"fmt"
-	"main/src/config"
 	"main/src/database/models"
 	"os"
 	"reflect"
@@ -22,42 +21,6 @@ func GetMethodByName(name string, controller any) (gin.HandlerFunc, error) {
 		return nil, fmt.Errorf("function %s has wrong signature", name)
 	}
 	return gin.HandlerFunc(handlerFunc), nil
-}
-
-func AddRoute(method string, path string, handlerName string, handler gin.HandlerFunc) {
-	fmt.Println(" - Adding route: " + method + " " + path + " ---> controllers." + handlerName)
-	switch method {
-	case "GET":
-		config.Application.GET(path, handler)
-	case "POST":
-		config.Application.POST(path, handler)
-	case "PUT":
-		config.Application.PUT(path, handler)
-	case "DELETE":
-		config.Application.DELETE(path, handler)
-	default:
-		panic("Unsupported HTTP method: " + method)
-	}
-}
-
-func SetupBaseRoute(routeName string, controller any) {
-	fmt.Println("--> Setting up route: " + routeName)
-	for _, route := range config.Configuration[routeName].Routes {
-		handler, err := GetMethodByName(route.Handler, controller)
-		if err != nil {
-			fmt.Println(
-				"Error setting up route: " + routeName + " - " + route.Handler + " - " + err.Error(),
-			)
-			continue
-		}
-		fullPath := config.Configuration[routeName].Path + route.Path
-		AddRoute(
-			route.Method,
-			fullPath,
-			route.Handler,
-			handler,
-		)
-	}
 }
 
 func DetectMigration() bool {
@@ -104,21 +67,9 @@ func AssignDataToUser(data models.User, user *models.User) {
 	}
 }
 
-func VerifyAndRespond(c *gin.Context, err error, message string) {
-	if err != nil {
-		Respond(c, message, config.Error{
-			Error:   err,
-			Message: message,
-			Code:    500,
-		})
-		return
+func Ternary[T any](condition bool, a, b T) T {
+	if condition {
+		return a
 	}
-	Respond(c, message, config.Error{})
-}
-
-func Respond(c *gin.Context, message string, err config.Error) {
-	c.JSON(200, config.Response{
-		Message: message,
-		Error:   &err,
-	})
+	return b
 }

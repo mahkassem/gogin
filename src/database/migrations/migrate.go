@@ -2,14 +2,15 @@ package migrations
 
 import (
 	"fmt"
-	"main/src/config"
 	"main/src/database/models"
+
+	"gorm.io/gorm"
 )
 
-func PerformMigration() {
+func PerformMigration(DB *gorm.DB) {
 	fmt.Println("Performing database migration...")
 
-	config.DB.AutoMigrate(
+	DB.AutoMigrate(
 		// &models.Entity{},
 		&models.User{},
 	)
@@ -17,10 +18,10 @@ func PerformMigration() {
 	fmt.Println("Migration complete!")
 }
 
-func DropTables() {
+func DropTables(DB *gorm.DB) {
 	fmt.Println("Dropping tables...")
 
-	config.DB.Migrator().DropTable(
+	DB.Migrator().DropTable(
 		&models.User{},
 	)
 

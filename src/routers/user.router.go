@@ -2,9 +2,10 @@ package routers
 
 import (
 	"main/src/controllers"
-	"main/src/utilities"
+
+	"github.com/gin-gonic/gin"
 )
 
-func SetupUserRouter() {
-	utilities.SetupBaseRoute("user", &controllers.UserController{})
+func SetupUserRouter(Application *gin.Engine) {
+	SetupBaseRoute(Application, "user", &controllers.UserController{})
 }

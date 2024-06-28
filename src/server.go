@@ -1,16 +1,17 @@
 package server
 
 import (
-	"main/src/config"
 	"main/src/routers"
 	"os"
 
 	"github.com/gin-gonic/gin"
 )
 
+var Application *gin.Engine
+
 func StartServer() {
 	gin.SetMode(gin.ReleaseMode)
-	config.Application = initEngine()
+	Application = initEngine()
 	go postInitialize()
 	listen()
 }
@@ -20,13 +21,13 @@ func postInitialize() {
 }
 
 func setupRouters() {
-	routers.SetupPingRouter()
-	routers.SetupUserRouter()
+	routers.SetupPingRouter(Application)
+	routers.SetupUserRouter(Application)
 }
 
 func initEngine() *gin.Engine {
 	return gin.Default()
 }
 func listen() {
-	config.Application.Run("127.0.0.1:" + os.Getenv("PORT"))
+	Application.Run("127.0.0.1:" + os.Getenv("PORT"))
 }
