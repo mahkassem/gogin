@@ -1,7 +1,7 @@
 package routers
 
 import (
-	controllers "main/src/controllers/users_controller"
+	"main/src/controllers"
 	"main/src/utilities"
 )
 

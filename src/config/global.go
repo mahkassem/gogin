@@ -5,7 +5,7 @@ import (
 	"gorm.io/gorm"
 )
 
-var Configuration Config
+var Configuration map[string]RouteConfig
 var Application *gin.Engine
 var DB *gorm.DB
 

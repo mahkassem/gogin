@@ -42,7 +42,7 @@ func AddRoute(method string, path string, handlerName string, handler gin.Handle
 
 func SetupBaseRoute(routeName string, controller any) {
 	fmt.Println("--> Setting up route: " + routeName)
-	for _, route := range config.Configuration.Routes[routeName].Routes {
+	for _, route := range config.Configuration[routeName].Routes {
 		handler, err := GetMethodByName(route.Handler, controller)
 		if err != nil {
 			fmt.Println(
@@ -50,7 +50,7 @@ func SetupBaseRoute(routeName string, controller any) {
 			)
 			continue
 		}
-		fullPath := config.Configuration.Routes[routeName].Path + route.Path
+		fullPath := config.Configuration[routeName].Path + route.Path
 		AddRoute(
 			route.Method,
 			fullPath,
@@ -102,4 +102,23 @@ func AssignDataToUser(data models.User, user *models.User) {
 	if data.Username != "" {
 		user.Username = data.Username
 	}
+}
+
+func VerifyAndRespond(c *gin.Context, err error, message string) {
+	if err != nil {
+		Respond(c, message, config.Error{
+			Error:   err,
+			Message: message,
+			Code:    500,
+		})
+		return
+	}
+	Respond(c, message, config.Error{})
+}
+
+func Respond(c *gin.Context, message string, err config.Error) {
+	c.JSON(200, config.Response{
+		Message: message,
+		Error:   &err,
+	})
 }

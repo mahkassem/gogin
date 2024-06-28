@@ -1,7 +1,7 @@
 package routers
 
 import (
-	controllers "main/src/controllers/ping_controller"
+	"main/src/controllers"
 	"main/src/utilities"
 )
 
