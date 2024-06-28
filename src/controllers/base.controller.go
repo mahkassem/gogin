@@ -13,14 +13,13 @@ func bindBody[T interface{}](c *gin.Context) (T, error) {
 	err := c.Bind(&obj)
 	return obj, err
 }
+
 func bindBodyWithResponse[T interface{}](c *gin.Context) (T, bool) {
-	var obj T
-	err := c.Bind(&obj)
-	var ok = err == nil
-	if !ok {
+	obj, err := bindBody[T](c)
+	if err != nil {
 		respond(c, 400, nil, "Invalid request", &config.Error{Error: err})
 	}
-	return obj, ok
+	return obj, err == nil
 }
 
 func getIntParam(c *gin.Context, param string) int {
