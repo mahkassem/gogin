@@ -10,15 +10,12 @@ type UserController struct{}
 
 func VerifyResult(result *gorm.DB, successMessage, errorMessage string) (string, *config.Error) {
 	var Message string
-	if result.Error != nil {
-		Message = errorMessage
-	} else {
-		Message = successMessage
-	}
-
 	var Error *config.Error
 	if result.Error != nil {
 		Error = &config.Error{Message: Message, Error: result.Error}
+		Message = errorMessage
+	} else {
+		Message = successMessage
 	}
 
 	return Message, Error
