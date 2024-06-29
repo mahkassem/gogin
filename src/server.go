@@ -12,8 +12,23 @@ var Application *gin.Engine
 func StartServer() {
 	gin.SetMode(gin.ReleaseMode)
 	Application = initEngine()
+	setupRendering()
 	go postInitialize()
 	listen()
+}
+
+func setupRendering() {
+	Application.LoadHTMLGlob("./views/**/*")
+	Application.Static("/public", "./public")
+	// TEST PURPOSES ONLY
+	Application.GET("/", func(c *gin.Context) {
+		c.HTML(200, "home.tmpl", gin.H{
+			"Title":   "Unique hamada",
+			"Link":    "https://www.google.com",
+			"Website": "Google",
+			"File":    "card.tmpl",
+		})
+	})
 }
 
 func postInitialize() {

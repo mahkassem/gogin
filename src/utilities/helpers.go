@@ -73,3 +73,12 @@ func Ternary[T any](condition bool, a, b T) T {
 	}
 	return b
 }
+
+func StringInSlice(str string, slice []string) bool {
+	for _, item := range slice {
+		if item == str {
+			return true
+		}
+	}
+	return false
+}

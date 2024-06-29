@@ -2,24 +2,27 @@ package routers
 
 import (
 	"fmt"
+	"main/src/middlewares"
 	"main/src/utilities"
 
 	"github.com/gin-gonic/gin"
 )
 
-func AddRoute(Application *gin.Engine, method string, path string, handlerName string, handler gin.HandlerFunc) {
-	fmt.Println(" - Adding route: " + method + " " + path + " ---> controllers." + handlerName)
-	switch method {
+func AddRoute(Application *gin.Engine, path string, parentMiddlewares []string, route Route, handler gin.HandlerFunc) {
+	fmt.Println(" - Adding route: " + route.Method + " " + path + " ---> controllers." + route.Handler)
+	parentMiddlewares = utilities.Ternary(utilities.StringInSlice("*", route.SkipMiddlewares), route.Middlewares, append(parentMiddlewares, route.Middlewares...))
+	handlers := append(middlewares.HandleRouteMiddleware(parentMiddlewares, route.SkipMiddlewares), handler)
+	switch route.Method {
 	case "GET":
-		Application.GET(path, handler)
+		Application.GET(path, handlers...)
 	case "POST":
-		Application.POST(path, handler)
+		Application.POST(path, handlers...)
 	case "PUT":
-		Application.PUT(path, handler)
+		Application.PUT(path, handlers...)
 	case "DELETE":
-		Application.DELETE(path, handler)
+		Application.DELETE(path, handlers...)
 	default:
-		panic("Unsupported HTTP method: " + method)
+		panic("Unsupported HTTP method: " + route.Method)
 	}
 }
 
@@ -36,9 +39,9 @@ func SetupBaseRoute(Application *gin.Engine, routeName string, controller any) {
 		fullPath := routes[routeName].Path + route.Path
 		AddRoute(
 			Application,
-			route.Method,
 			fullPath,
-			route.Handler,
+			routes[routeName].Middlewares,
+			route,
 			handler,
 		)
 	}
