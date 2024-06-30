@@ -36,8 +36,7 @@ func postInitialize() {
 }
 
 func setupRouters() {
-	routers.SetupPingRouter(Application)
-	routers.SetupUserRouter(Application)
+	routers.SetupRouters(Application)
 }
 
 func initEngine() *gin.Engine {

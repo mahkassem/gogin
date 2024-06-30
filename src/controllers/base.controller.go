@@ -2,11 +2,13 @@ package controllers
 
 import (
 	"main/src/config"
-	"main/src/utilities"
+	"main/src/godash"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
+
+type BaseController struct{}
 
 func bindBody[T interface{}](c *gin.Context) (T, error) {
 	var obj T
@@ -29,8 +31,8 @@ func getIntParam(c *gin.Context, param string) int {
 
 func verifyAndRespond(c *gin.Context, responseCode int, data interface{}, err error, successMessage, errorMessage string) {
 
-	var Message = utilities.Ternary(err == nil, successMessage, errorMessage)
-	var error = utilities.Ternary(err != nil, &config.Error{Error: err}, nil)
+	var Message = godash.If(err == nil, successMessage, errorMessage)
+	var error = godash.If(err != nil, &config.Error{Error: err}, nil)
 
 	respond(c, responseCode, data, Message, error)
 }

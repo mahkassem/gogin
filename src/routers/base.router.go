@@ -2,15 +2,18 @@ package routers
 
 import (
 	"fmt"
+	"main/src/controllers"
+	"main/src/godash"
 	"main/src/middlewares"
-	"main/src/utilities"
+	s "strings"
 
 	"github.com/gin-gonic/gin"
 )
 
-func AddRoute(Application *gin.Engine, path string, parentMiddlewares []string, route Route, handler gin.HandlerFunc) {
-	fmt.Println(" - Adding route: " + route.Method + " " + path + " ---> controllers." + route.Handler)
-	parentMiddlewares = utilities.Ternary(utilities.StringInSlice("*", route.SkipMiddlewares), route.Middlewares, append(parentMiddlewares, route.Middlewares...))
+func AddRoute(Application *gin.Engine, parentMiddlewares []string, route Route, handler gin.HandlerFunc) {
+	path := route.Path
+	// fmt.Println(" - Adding route: " + route.Method + " " + path + " ---> controllers." + route.Handler)
+	parentMiddlewares = godash.If(godash.StringInSlice("*", route.SkipMiddlewares), route.Middlewares, append(parentMiddlewares, route.Middlewares...))
 	handlers := append(middlewares.HandleRouteMiddleware(parentMiddlewares, route.SkipMiddlewares), handler)
 	switch route.Method {
 	case "GET":
@@ -26,23 +29,40 @@ func AddRoute(Application *gin.Engine, path string, parentMiddlewares []string, 
 	}
 }
 
-func SetupBaseRoute(Application *gin.Engine, routeName string, controller any) {
-	fmt.Println("--> Setting up route: " + routeName)
-	for _, route := range routes[routeName].Routes {
-		handler, err := utilities.GetMethodByName(route.Handler, controller)
-		if err != nil {
-			fmt.Println(
-				"Error setting up route: " + routeName + " - " + route.Handler + " - " + err.Error(),
-			)
-			continue
+func SetupRouters(Application *gin.Engine) {
+	for _, route := range routes {
+		SetupRoute(Application, route, 1)
+	}
+}
+
+func SetupRoute(Application *gin.Engine, route Route, count int) {
+	fmt.Println(" " + s.Repeat("-", count) + " Setting up route: " + route.Path)
+	count += 1
+	for _, subRoute := range route.Routes {
+		if len(subRoute.Routes) == 0 {
+			SetupSubRoute(Application, route.Path, subRoute, count)
+		} else {
+			subRoute.Path = route.Path + subRoute.Path
+			subRoute.Middlewares = append(route.Middlewares, subRoute.Middlewares...)
+			subRoute.SkipMiddlewares = append(route.SkipMiddlewares, subRoute.SkipMiddlewares...)
+			SetupRoute(Application, subRoute, count)
 		}
-		fullPath := routes[routeName].Path + route.Path
-		AddRoute(
-			Application,
-			fullPath,
-			routes[routeName].Middlewares,
-			route,
-			handler,
+	}
+}
+
+func SetupSubRoute(Application *gin.Engine, path string, route Route, count int) {
+	route.Path = path + route.Path
+	fmt.Println(" " + s.Repeat("-", count) + " Adding sub-route: " + route.Method + " " + route.Path + " ---> controllers." + route.Handler)
+	handler, err := godash.GetMethodByName(route.Handler, &controllers.BaseController{})
+	if err != nil {
+		fmt.Println(
+			"Error setting up route: " + route.Path + " - " + route.Handler + " - " + err.Error(),
 		)
 	}
+	AddRoute(
+		Application,
+		route.Middlewares,
+		route,
+		handler,
+	)
 }

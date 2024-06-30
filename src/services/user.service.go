@@ -3,7 +3,7 @@ package services
 import (
 	"main/src/database"
 	"main/src/database/models"
-	"main/src/utilities"
+	"main/src/godash"
 
 	"gorm.io/gorm"
 )
@@ -23,7 +23,7 @@ func UpdateUser(id int, data models.User) (*models.User, *gorm.DB, bool) {
 	if !ok {
 		return nil, nil, false
 	}
-	utilities.AssignDataToUser(data, &user)
+	godash.AssignDataToUser(data, &user)
 	result := database.DB.Updates(&user)
 	if result.Error != nil {
 		return nil, result, true

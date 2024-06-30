@@ -13,7 +13,7 @@ import (
 
 var db = make(map[string]string)
 
-func SetupRouter() *gin.Engine {
+func old() *gin.Engine {
 
 	// Disable Console Color
 	// gin.DisableConsoleColor()

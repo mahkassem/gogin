@@ -7,8 +7,6 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type PingController struct{}
-
-func (test *PingController) Test(c *gin.Context) {
+func (test *BaseController) Test(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"time": time.Now().String()})
 }

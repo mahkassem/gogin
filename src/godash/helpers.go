@@ -1,4 +1,4 @@
-package utilities
+package godash
 
 import (
 	"fmt"
@@ -67,7 +67,7 @@ func AssignDataToUser(data models.User, user *models.User) {
 	}
 }
 
-func Ternary[T any](condition bool, a, b T) T {
+func If[T any](condition bool, a, b T) T {
 	if condition {
 		return a
 	}

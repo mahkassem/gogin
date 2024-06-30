@@ -2,7 +2,7 @@ package middlewares
 
 import (
 	"fmt"
-	"main/src/utilities"
+	"main/src/godash"
 	"reflect"
 
 	"github.com/gin-gonic/gin"
@@ -12,8 +12,9 @@ type Middleware struct{}
 
 func HandleRouteMiddleware(middlewareNames []string, skip []string) []gin.HandlerFunc {
 	middlewares := []gin.HandlerFunc{(&Middleware{}).BaseMiddleware()}
+	computed := []string{}
 	for _, middlewareName := range middlewareNames {
-		if utilities.StringInSlice(middlewareName, skip) {
+		if godash.StringInSlice(middlewareName, skip) || godash.StringInSlice(middlewareName, computed) {
 			continue
 		}
 		handler, err := getMiddlewareByName(middlewareName, &Middleware{})
@@ -22,6 +23,7 @@ func HandleRouteMiddleware(middlewareNames []string, skip []string) []gin.Handle
 			panic("Middleware not found: " + middlewareName)
 		}
 		middlewares = append(middlewares, handler)
+		computed = append(computed, middlewareName)
 	}
 	return middlewares
 }

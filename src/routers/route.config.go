@@ -1,9 +1,8 @@
 package routers
 
-var routes = map[string]RouteConfig{
+var routes = map[string]Route{
 	"user": {
-		Path:        "/users",
-		Description: "User routes",
+		Path: "/users",
 		Middlewares: []string{
 			"AuthenticationMiddleware",
 			"TestMiddleware",
@@ -11,10 +10,18 @@ var routes = map[string]RouteConfig{
 		Routes: []Route{
 			{
 				Path:            "/",
-				Method:          "GET",
 				Handler:         "GetAllUsers",
 				SkipMiddlewares: []string{"*"},
-				Middlewares:     []string{"Test2Middleware"},
+				Routes: []Route{
+					{
+						Path:    "test/:id",
+						Method:  "GET",
+						Handler: "GetUserById",
+						Middlewares: []string{
+							"Test2Middleware",
+						},
+					},
+				},
 			},
 			{
 				Path:    "/:id",
@@ -39,8 +46,7 @@ var routes = map[string]RouteConfig{
 		},
 	},
 	"ping": {
-		Path:        "/ping",
-		Description: "Ping routes",
+		Path: "/ping",
 		Routes: []Route{
 			{
 				Path:    "/",
@@ -52,16 +58,10 @@ var routes = map[string]RouteConfig{
 }
 
 type Route struct {
-	Path            string `json:"path"`
-	Method          string `json:"method"`
-	Handler         string `json:"handler"`
+	Path            string
+	Method          string
+	Handler         string
 	Middlewares     []string
 	SkipMiddlewares []string
-}
-
-type RouteConfig struct {
-	Path        string  `json:"path"`
-	Description string  `json:"description"`
-	Routes      []Route `json:"routes"`
-	Middlewares []string
+	Routes          []Route
 }
