@@ -56,18 +56,3 @@ func (*BaseController) UpdateUser(c *gin.Context) {
 
 	verifyAndRespond(c, http.StatusOK, user, result.Error, message, "Error updating user")
 }
-
-/*
-	1. GET / index
-
-	2. GET / new
-	3. POST / create
-
-	4. GET /:id show
-
-	7. DELETE /:id destroy
-
-
-	5. GET /:id/edit edit
-	6. PUT /:id update
-*/

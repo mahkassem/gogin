@@ -18,7 +18,7 @@ func StartServer() {
 }
 
 func setupRendering() {
-	Application.LoadHTMLGlob("./views/**/*")
+	Application.LoadHTMLGlob("./views/**/**/*")
 	Application.Static("/public", "./public")
 	// TEST PURPOSES ONLY
 	Application.GET("/", func(c *gin.Context) {
@@ -26,7 +26,6 @@ func setupRendering() {
 			"Title":   "Unique hamada",
 			"Link":    "https://www.google.com",
 			"Website": "Google",
-			"File":    "card.tmpl",
 		})
 	})
 }
