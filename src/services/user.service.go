@@ -19,12 +19,13 @@ func DeleteUser(id int) *gorm.DB {
 }
 
 func UpdateUser(id int, data models.User) (*models.User, *gorm.DB, bool) {
-	user, _, ok := GetUserById(id)
+	user, result, ok := GetUserById(id)
 	if !ok {
-		return nil, nil, false
+		return nil, result, false
 	}
-	godash.AssignDataToUser(data, &user)
-	result := database.DB.Updates(&user)
+	// Update user with new data from request
+	godash.Map(data, &user, true)
+	result = database.DB.Updates(&user)
 	if result.Error != nil {
 		return nil, result, true
 	}

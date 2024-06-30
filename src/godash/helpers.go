@@ -2,7 +2,6 @@ package godash
 
 import (
 	"fmt"
-	"main/src/database/models"
 	"os"
 	"reflect"
 
@@ -10,9 +9,9 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-func GetMethodByName(name string, controller any) (gin.HandlerFunc, error) {
-	ctrl := reflect.ValueOf(controller)
-	method := ctrl.MethodByName(name)
+func GetMethodByName(parentStruct any, name string) (gin.HandlerFunc, error) {
+	parent := reflect.ValueOf(parentStruct)
+	method := parent.MethodByName(name)
 	if !method.IsValid() {
 		return nil, fmt.Errorf("no function with name %s found", name)
 	}
@@ -31,20 +30,6 @@ func DetectMigration() bool {
 	return command == "migrate" || command == "-m" || command == "--migrate"
 }
 
-func Assign(_1 interface{}, _2 []interface{}) {
-	// Reflect value of the existing user
-	v := reflect.ValueOf(_1).Elem()
-
-	// Iterate over the request body and update fields dynamically
-	for key, value := range _2 {
-		fmt.Println(key, value)
-		field := v.FieldByName(string(key))
-		if field.IsValid() && field.CanSet() {
-			field.Set(reflect.ValueOf(value))
-		}
-	}
-}
-
 func HashPassword(password string) string {
 	result, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
 	if err != nil {
@@ -55,16 +40,6 @@ func HashPassword(password string) string {
 
 func ComparePassword(hashedPassword string, password string) bool {
 	return bcrypt.CompareHashAndPassword([]byte(hashedPassword), []byte(password)) == nil
-}
-
-func AssignDataToUser(data models.User, user *models.User) {
-	if data.Email != "" {
-		user.Email = data.Email
-	}
-
-	if data.Username != "" {
-		user.Username = data.Username
-	}
 }
 
 func If[T any](condition bool, a, b T) T {
@@ -81,4 +56,28 @@ func StringInSlice(str string, slice []string) bool {
 		}
 	}
 	return false
+}
+
+func Map[A any](source A, destination *A, skipZeroValues ...bool) error {
+	for i := 0; i < reflect.ValueOf(*destination).NumField(); i++ {
+		name := reflect.ValueOf(*destination).Type().Field(i).Name
+		value := reflect.ValueOf(source).Field(i).Interface()
+		structValue := reflect.ValueOf(destination).Elem()
+		fieldValue := structValue.FieldByName(name)
+		if !fieldValue.IsValid() {
+			return fmt.Errorf("no such field: %s in obj", name)
+		}
+		if !fieldValue.CanSet() {
+			return fmt.Errorf("cannot set field %s", name)
+		}
+		val := reflect.ValueOf(value)
+		if len(skipZeroValues) > 0 && val.IsZero() {
+			continue
+		}
+		if fieldValue.Type() != val.Type() {
+			return fmt.Errorf("provided value type didn't match obj field type")
+		}
+		fieldValue.Set(val)
+	}
+	return nil
 }

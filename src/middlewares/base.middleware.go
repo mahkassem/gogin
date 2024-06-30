@@ -49,7 +49,7 @@ func getMiddlewareByName(name string, controller any) (gin.HandlerFunc, error) {
 	}
 	handlerFunc, ok := method.Interface().(func() gin.HandlerFunc)
 	if !ok {
-		return nil, fmt.Errorf("function %s has wrong signature", name)
+		return nil, fmt.Errorf("middleware %s has wrong signature", name)
 	}
 	return handlerFunc(), nil
 }

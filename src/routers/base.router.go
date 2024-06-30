@@ -36,7 +36,7 @@ func SetupRouters(Application *gin.Engine) {
 }
 
 func SetupRoute(Application *gin.Engine, route Route, count int) {
-	fmt.Println(" " + s.Repeat("-", count) + " Setting up route: " + route.Path)
+	fmt.Println(" " + s.Repeat("   ", count) + s.Repeat("-", count) + "> Setting up route: " + route.Path)
 	count += 1
 	for _, subRoute := range route.Routes {
 		if len(subRoute.Routes) == 0 {
@@ -52,8 +52,8 @@ func SetupRoute(Application *gin.Engine, route Route, count int) {
 
 func SetupSubRoute(Application *gin.Engine, path string, route Route, count int) {
 	route.Path = path + route.Path
-	fmt.Println(" " + s.Repeat("-", count) + " Adding sub-route: " + route.Method + " " + route.Path + " ---> controllers." + route.Handler)
-	handler, err := godash.GetMethodByName(route.Handler, &controllers.BaseController{})
+	fmt.Println(" " + s.Repeat("   ", count) + s.Repeat("-", count) + "> Adding sub-route: " + route.Method + " " + route.Path + " ---> controllers." + route.Handler)
+	handler, err := godash.GetMethodByName(&controllers.BaseController{}, route.Handler)
 	if err != nil {
 		fmt.Println(
 			"Error setting up route: " + route.Path + " - " + route.Handler + " - " + err.Error(),

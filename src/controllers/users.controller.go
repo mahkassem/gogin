@@ -52,7 +52,12 @@ func (*BaseController) UpdateUser(c *gin.Context) {
 
 	user, result, found := services.UpdateUser(id, body)
 
-	var message = godash.If(found, "User updated successfully", "User not found")
-
-	verifyAndRespond(c, http.StatusOK, user, result.Error, message, "Error updating user")
+	verifyAndRespond(
+		c,
+		http.StatusOK,
+		user,
+		result.Error,
+		godash.If(found, "User updated successfully", "User not found"),
+		"Error updating user",
+	)
 }
